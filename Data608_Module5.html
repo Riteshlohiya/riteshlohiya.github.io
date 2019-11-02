@@ -1,0 +1,178 @@
+<html>
+
+<!--
+    
+    Note to Students:
+
+        This is a very short introduction to using Javascript in the browser.
+
+        To see this as a webpage, you have to start a *Local Web Server*. There are many ways to do this: since you all have python installed, we will use python.
+
+        - Open terminal
+
+        - 'cd' into the directory where this html file is (js_in_webpage.html)
+
+        - Type the following into the terminal and hit 'enter':
+            python -m SimpleHTTPServer
+
+            your server should read something like: Serving HTTP on 0.0.0.0 port 8000 ...
+
+        - now go to any browser and type in the HTTP address and the filename: something like:
+
+            http://0.0.0.0:8000/js_in_webpage.html
+
+            or
+
+            http://localhost:8000/js_in_webpage.html
+        
+        - Congrats: you now have a local HTTP server running. Now, every time you change this file and save it, when you reload the browser you will see your changes!
+-->
+
+<head>
+	<title>Data608 Module5 - Javascript</title>
+</head>
+
+<body>
+
+<h1>Data608 Module5 - Javascript</h1>
+<h2>Intro to JS in a Browser</h2>
+<h2>Ritesh Lohiya</h2>
+
+
+<script type="text/javascript">
+
+var rightNow = new Date();
+
+document.write('<p>Right now it is ' + rightNow + '<p>');
+
+</script>
+
+
+<script type="text/javascript">
+
+document.write('<br><p>Reverse any word that you type in.')
+
+// Basic functions
+
+function reverseStringFunc(s){
+    return(s.split("").reverse().join(""));
+};
+
+function reverseString(){
+    var t = document.getElementById("target");
+    t.innerHTML = reverseStringFunc(document.getElementById('text').value);
+}
+
+
+
+</script>
+<p>
+<form>
+    <input id="text" type="string">
+    <input type="button" value="reverse" onClick="reverseString();">
+</form>
+</p>
+
+<div id="target"></div>
+
+<script type="text/javascript">
+
+document.write('<br><p>Input number and prints a table with the first 20 multiples of the number, in order 5x4')
+
+// Basic functions
+
+function createTable(i) {
+ var s = "<table><tr><td>" + 1 * i + "</td><td>" + 2 * i + "</td><td>" + 3 * i + "</td><td>" + 4 * i + "</td></tr><tr><td>" + 5 * i + "</td><td>" + 6 * i + "</td><td>" + 7 * i + "</td><td>" + 8 * i + "</td></tr><tr><td>" + 9 * i + "</td><td>" + 10 * i + "</td><td>" + 11 * i + "</td><td>" + 12 * i + "</td></tr><tr><td>" + 13 * i + "</td><td>" + 14 * i + "</td><td>" + 15 * i + "</td><td>" + 16 * i + "</td></tr><tr><td>" + 17 * i + "</td><td>" + 18 * i + "</td><td>" + 19 * i + "</td><td>" + 20 * i + "</td></tr></table>"
+ return(s)
+}
+
+function createTableCallback(){
+var t = document.getElementById("target2");
+    t.innerHTML = createTable(document.getElementById('table_num').value);
+}
+
+
+
+</script>
+<p>
+<form>
+    <input id="table_num" type="num">
+    <input type="button" value="create table" onClick="createTableCallback();">
+</form>
+</p>
+
+<div id="target2"></div>
+
+<script type="text/javascript">
+
+document.write('<br><p>Load the presidents.csv data and return that president’s height & weight when you type it in')
+
+	var two_d_array;
+    function Upload() {
+        var fileUpload = document.getElementById("fileUpload");
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var table = document.createElement("table");
+                    var rows = e.target.result.split("\n");
+					two_d_array= e.target.result.split("\n").map(function(row){return row.split(",");})
+                    for (var i = 0; i < rows.length; i++) {
+                        var cells = rows[i].split(",");
+                        if (cells.length > 1) {
+                            var row = table.insertRow(-1);
+                            for (var j = 0; j < cells.length; j++) {
+                                var cell = row.insertCell(-1);
+                                cell.innerHTML = cells[j];
+                            }
+                        }
+                    }
+                    var dvCSV = document.getElementById("dvCSV");
+                    dvCSV.innerHTML = "";
+                    dvCSV.appendChild(table);
+                }
+                reader.readAsText(fileUpload.files[0]);
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid CSV file.");
+        }
+    }
+	
+	function showWeightsAndHeights(s){
+		console.log(s)
+	    var i;
+		var found = false;
+		for (i = 0; i < two_d_array.length; i++) {
+		  console.log('checking ' + two_d_array[i][0])
+		  if (two_d_array[i][0] == s) {
+		    found=true;
+		    return alert("Weight is " + two_d_array[i][1] + " and height is "+ two_d_array[i][2])
+		  }
+		}
+		if (!found){
+			alert("Unable to find the height and weight, make sure you type valid name");
+		}
+	}
+	
+	function showWeightsAndHeightsCallback(){
+		showWeightsAndHeights(document.getElementById('text2').value);
+	}
+</script>
+<input type="file" id="fileUpload" />
+<input type="button" id="upload" value="Upload" onclick="Upload()" />
+<hr />
+<div id="dvCSV">
+</div>
+
+<input type="text" id="text2" />
+<input type="button" id="lookup" value="check weight and height" onclick="showWeightsAndHeightsCallback()" />
+
+<script>
+
+</script>
+
+</body>
+</html>
